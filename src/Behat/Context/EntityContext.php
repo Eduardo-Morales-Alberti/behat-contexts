@@ -94,7 +94,7 @@ class EntityContext extends RawDrupalContext implements SnippetAcceptingContext 
    * @Then the :object_type with field :field_name and value :value should have the following values:
    *
    * Example:
-   * And the 'user' with field 'mail' and value 'entity-replacement:user:mail:behat@metadrop.net:mail' should have the following values:
+   * And the 'user' with field 'uid' and value 'entity-replacement:user:mail:behat@metadrop.net:uid' should have the following values:
    *  | mail                | uid                                                 |
    *  | behat@metadrop.net  | entity-replacement:user:mail:behat@metadrop.net:uid |
    */
