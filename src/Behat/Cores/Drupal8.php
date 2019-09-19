@@ -162,10 +162,13 @@ class Drupal8 extends OriginalDrupal8 implements CoreInterface {
     $query = \Drupal::entityQuery($entity_type);
     $query->condition($field_name, $value);
     $entity_ids = $query->execute();
-    rsort($entity_ids);
-    $entity_id = reset($entity_ids);
+    $entity = NULL;
+    if (!empty($entity_ids)) {
+      rsort($entity_ids);
+      $entity_id = reset($entity_ids);
 
-    $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+      $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+    }
     return (!empty($entity) && ($entity instanceof EntityInterface)) ? $entity : NULL;
   }
 

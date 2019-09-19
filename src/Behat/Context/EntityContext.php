@@ -94,20 +94,23 @@ class EntityContext extends RawDrupalContext implements SnippetAcceptingContext 
    * @Then the :object_type with field :field_name and value :value should have the following values:
    *
    * Example:
-   * And the 'user' with field 'mail' and value 'behat@metadrop.net' should have the following values:
+   * And the 'user' with field 'mail' and value 'entity-replacement:user:mail:behat@metadrop.net:mail' should have the following values:
    *  | mail                | uid                                                 |
    *  | behat@metadrop.net  | entity-replacement:user:mail:behat@metadrop.net:uid |
    */
   public function checkEntityTestValues($entity_type, $field_name, $value, TableNode $values, $throw_error_on_empty = TRUE) {
     $hash = $values->getHash();
     $fields = $hash[0];
+    $value_array = [$value];
+    $replaced_value = $this->replaceTokens($value_array);
+    $value_process = is_array($replaced_value) && !empty($replaced_value) ? reset($replaced_value) : $value;
 
-    $entity = $this->getCore()->getEntityByField($entity_type, $field_name, $value);
-
+    $entity = $this->getCore()->getEntityByField($entity_type, $field_name, $value_process);
     // Check entity.
     if (!isset($entity)) {
-      throw new \Exception('The ' . $entity_type . ' with ' . $field_name . ':  ' . $value . ' not found.');
+      throw new \Exception('The ' . $entity_type . ' with ' . $field_name . ': ' . $value_process . ' not found.');
     }
+
     // Make field tokens replacements.
     $fields = $this->replaceTokens($fields);
 
